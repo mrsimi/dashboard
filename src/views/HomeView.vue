@@ -1,18 +1,27 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <div class="home-content">
+      <h4>Charts</h4>
+      <chart-data-component :category="'Top 100'" :charts="charts"/>
+    </div>
   </div>
 </template>
 
-<script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
+<script setup>
+import ChartDataComponent from '@/components/ChartDataComponent.vue';
+import { onBeforeMount, computed } from 'vue';
+import { useStore } from 'vuex';
 
-export default {
-  name: 'HomeView',
-  components: {
-    HelloWorld,
-  },
-};
+const store = useStore();
+
+const charts = computed(() => store.getters['chart/getCharts']);
+
+onBeforeMount(() => {
+  store.dispatch('chart/getCharts');
+});
 </script>
+<style>
+.home-content{
+  margin: 50px;
+}
+</style>
